@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jonas Bertilsson — Videoredigerare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="#hero" class="nav__brand">Jonas Bertilsson</a>
+
+    <div class="nav__status" aria-label="Lokal tid och plats">
+      <span class="nav__dot" aria-hidden="true"></span>
+      <span id="clock">--:--</span>
+      <span class="nav__divider" aria-hidden="true">·</span>
+      <span>Linköping, Sverige</span>
+    </div>
+
+    <nav class="nav__links" aria-label="Sidnavigering">
+      <a href="#hero" data-target="hero">Start</a>
+      <a href="#work" data-target="work">Arbete</a>
+      <a href="#about" data-target="about">Om</a>
+      <a href="#contact" data-target="contact">Kontakt</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div class="hero__atmosphere" aria-hidden="true">
+        <div class="hero__glow hero__glow--1"></div>
+        <div class="hero__glow hero__glow--2"></div>
+        <div class="hero__grain"></div>
+      </div>
+      <div class="hero__content">
+        <p class="hero__eyebrow">Videoredigering &amp; filmskapande — Linköping, Sverige</p>
+        <h1 class="hero__title">Jag klipper råmaterial<br>till berättelser man <em>känner.</em></h1>
+        <a href="#work" class="hero__scroll">Se klipp<span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section id="work" class="work">
+      <div class="work__intro reveal">
+        <span class="eyebrow">01 — Arbete</span>
+        <h2 class="work__title">Mitt arbete.</h2>
+      </div>
+
+      <div class="reel">
+        <article class="reel__item reveal">
+          <span class="reel__num">01</span>
+          <div class="reel__video">
+            <video controls preload="metadata">
+              <!-- Byt ut src nedan mot sökvägen till din video -->
+              <source src="videos/klipp-1.mp4" type="video/mp4">
+              Din webbläsare stödjer inte video-uppspelning.
+            </video>
+          </div>
+        </article>
+
+        <article class="reel__item reveal">
+          <span class="reel__num">02</span>
+          <div class="reel__video">
+            <video controls preload="metadata">
+              <source src="videos/klipp-2.mp4" type="video/mp4">
+              Din webbläsare stödjer inte video-uppspelning.
+            </video>
+          </div>
+        </article>
+
+        <article class="reel__item reveal">
+          <span class="reel__num">03</span>
+          <div class="reel__video">
+            <video controls preload="metadata">
+              <source src="videos/klipp-3.mp4" type="video/mp4">
+              Din webbläsare stödjer inte video-uppspelning.
+            </video>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+      <span class="eyebrow eyebrow--dark reveal">02 — Om mig</span>
+      <p class="about__text reveal">
+        Jag heter Jonas Bertilsson och är en videoredigerare från
+        Linköping med ett djupt intresse för videoredigering och
+        filmskapande i alla dess former. Jag klipper i DaVinci Resolve
+        och tycker om processen att hitta rytmen i ett material — hur
+        ett klipp, ett ljud eller en färgkorrigering kan förändra hur
+        en scen känns.
+      </p>
+
+      <ul class="about__facts reveal">
+        <li><span>Verktyg</span>DaVinci Resolve</li>
+        <li><span>Fokus</span>Videoredigering, filmskapande</li>
+        <li><span>Baserad</span>Linköping, Sverige</li>
+        <li><span>Tillgänglig</span>Öppen för nya projekt</li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+      <span class="eyebrow">03 — Kontakt</span>
+      <h2 class="contact__title">Har du ett projekt<br>i åtanke?</h2>
+      <a href="mailto:Jonas.andaman@gmail.com" class="contact__cta">
+        Jonas.andaman@gmail.com
+      </a>
+      <div class="contact__links">
+        <a href="https://instagram.com/jonasbertilsson" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/jonas-bertilsson-81289327b/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Jonas Bertilsson</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
