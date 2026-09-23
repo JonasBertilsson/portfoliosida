@@ -16,6 +16,7 @@
   --font: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
   --pad: clamp(24px, 6vw, 96px);
+  --reel-gap: clamp(16px, 2.2vw, 28px); /* mellanrummet mellan alla klipp i bento-rutnätet */
 }
 
 * { box-sizing: border-box; }
@@ -83,6 +84,7 @@ img { max-width: 100%; display: block; }
   font-size: 16px;
   letter-spacing: -0.01em;
   justify-self: start;
+  white-space: nowrap;
 }
 
 .nav__status {
@@ -127,6 +129,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   gap: 32px;
   justify-self: end;
+  min-width: 0; /* låter länkarna krympa/scrolla istället för att tvinga ut sidan i bredd */
 }
 
 .nav__links a {
@@ -135,6 +138,7 @@ img { max-width: 100%; display: block; }
   color: rgba(245, 245, 247, 0.78);
   transition: color 0.2s ease;
   position: relative;
+  white-space: nowrap;
 }
 
 .nav__links a:hover,
@@ -153,10 +157,48 @@ img { max-width: 100%; display: block; }
   border-radius: 1px;
 }
 
+/* Mobil: om det inte finns plats för alla rubriker krymper de först.
+   Räcker inte det (t.ex. mycket smala skärmar) blir menyn istället
+   horisontellt skrollbar så att "Kontakt" m.fl. alltid går att nå. */
 @media (max-width: 640px) {
-  .nav__links { gap: 18px; }
-  .nav__brand { font-size: 14px; }
-  .nav__links a { font-size: 13px; }
+  .nav {
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .nav.is-scrolled { padding: 10px 16px; }
+  .nav__status { display: none; } /* för trångt för klocka/plats på små skärmar */
+
+  .nav__brand {
+    font-size: 13.5px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav__links {
+    gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* äldre Edge */
+    padding-block: 2px; /* litet utrymme så fokus-ringen inte klipps */
+  }
+
+  .nav__links::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+  .nav__links a {
+    font-size: 12.5px;
+    scroll-snap-align: end;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav__links { gap: 10px; }
+  .nav__links a { font-size: 11.5px; }
+  .nav__brand { font-size: 12.5px; }
 }
 
 /* ============================================
@@ -265,7 +307,7 @@ img { max-width: 100%; display: block; }
 
 .hero__scroll:hover {
   background: rgba(245, 245, 247, 0.12);
-  border-color: rgba(245, 245, 247, 0.6);
+  border-color: var(--accent);
 }
 
 .hero__scroll span { transition: transform 0.25s ease; }
@@ -292,47 +334,52 @@ img { max-width: 100%; display: block; }
   margin: 0;
 }
 
+/* Klippen är i mobilformat (stående, 9:14) och visas som en luftig,
+   horisontellt scrollbar filmremsa. Mellanrummet mellan klippen sätts
+   med riktig "gap" (garanterat lika stort, oavsett antal klipp) och
+   ".work" ovanför står redan för vänster/höger-marginalen, så remsan
+   linjerar med rubriken istället för att sticka ut mot kanten. */
 .reel {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--reel-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  padding: 4px 0 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
 }
 
-@media (max-width: 900px) {
-  .reel { grid-template-columns: 1fr; }
+.reel::-webkit-scrollbar { height: 6px; }
+.reel::-webkit-scrollbar-track { background: transparent; }
+.reel::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 100px;
 }
 
 .reel__item {
   position: relative;
-}
-
-.reel__num {
-  position: absolute;
-  top: -12px;
-  left: 20px;
-  z-index: 3;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--black);
-  background: var(--accent);
-  padding: 5px 12px;
-  border-radius: 100px;
-  letter-spacing: 0.02em;
-  box-shadow: 0 4px 14px -4px rgba(201, 162, 75, 0.55);
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  height: min(76vh, 700px);
 }
 
 .reel__video {
+  height: 100%;
+  width: auto;
   aspect-ratio: 9 / 14;
   background: #111113;
-  border-radius: 24px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.35);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  filter: saturate(0.94) brightness(0.97);
+  box-shadow: 0 24px 48px -28px rgba(0, 0, 0, 0.4);
+  transition: filter 0.4s ease, box-shadow 0.4s ease;
 }
 
 .reel__item:hover .reel__video {
-  transform: translateY(-6px);
-  box-shadow: 0 28px 56px -20px rgba(0,0,0,0.45);
+  filter: saturate(1) brightness(1.02);
+  box-shadow: 0 28px 56px -24px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent-soft);
 }
 
 .reel__video video {
@@ -340,6 +387,58 @@ img { max-width: 100%; display: block; }
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Klipp-1 är en färdig annons redan monterad i en bred kanvas med
+   svarta fält runt själva innehållet — inbränt i filen, inte något
+   CSS kan beskära bort. "Cover" zoomar och klipper konstigt utan att
+   bli av med fälten. Visa den hela istället ("contain") mot samma
+   mörka bakgrund, så ser det medvetet ut snarare än trasigt. */
+.reel__item--letterboxed .reel__video video {
+  object-fit: contain;
+}
+
+/* Håll zoom-hover-effekten borta från nativ helskärm — annars stannar
+   den kvar när man klickar helskärmsknappen i spelaren, vilket gjorde
+   att videon aldrig verkade fylla hela skärmen ordentligt. */
+video:fullscreen,
+video:-webkit-full-screen,
+video:-moz-full-screen {
+  transform: none !important;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ipads och mellanstora laptops (ung. 641–1400px): fyra porträttklipp i
+   en rad blir för brett för att få plats utan att behöva scrolla i sidled.
+   Visa dem istället i ett 2×2-rutnät — sidan scrollar bara vertikalt som
+   vanligt, precis som resten av sidan. */
+@media (min-width: 641px) and (max-width: 1400px) {
+  .reel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow: visible;
+  }
+  .reel__item {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 14;
+  }
+}
+
+@media (max-width: 640px) {
+  .reel {
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-x: visible;
+    overflow-y: visible;
+    scroll-snap-type: none;
+  }
+  .reel__item {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 14;
+  }
 }
 
 /* ============================================
@@ -422,7 +521,7 @@ img { max-width: 100%; display: block; }
   border: 1.5px solid var(--ink);
   padding: 17px 36px;
   border-radius: 100px;
-  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .contact__cta:hover {
@@ -430,6 +529,7 @@ img { max-width: 100%; display: block; }
   color: var(--white);
   border-color: var(--ink);
   transform: translateY(-2px);
+  box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent-soft);
 }
 
 .contact__links {
